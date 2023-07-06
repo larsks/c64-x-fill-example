@@ -11,7 +11,7 @@
 * = $00fb "ZP" virtual
 target: .word 0             // define zero page variable for 16 bit addition
 
-* = $c000
+* = $c000 "Main"
 main:
   ldx #numcols              // x is loop index
   lda #fill_char
