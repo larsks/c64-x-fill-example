@@ -1,52 +1,56 @@
 :BasicUpstart2(main)
 
-.const numrows = 24
-.const numcols = 40
-.const char_x = 24
+.const numrows = 24         // number of rows on screen
+.const numcols = 40         // number of columns on screen
+.const fill_char = 24       // fill character for border
 
 .var screen_base = $0400
 .var screen_row_01 = screen_base
 .var screen_row_24 = $07c0
 
 * = $00fb "ZP" virtual
-target: .word 0
+target: .word 0             // define zero page variable for 16 bit addition
 
 * = $c000
 main:
-  ldx #0
-  lda #char_x
+  ldx #numcols              // x is loop index
+  lda #fill_char
 fill_row_1:
   sta screen_row_01,X
   sta screen_row_24,X
-  inx
-  cpx #numcols
-  bne fill_row_1
+  dex                       // decrement loop index
+  bne fill_row_1            // loop until we reach 0
 
-  lda #<screen_base
+  lda #<screen_base         // store screen base address in target
   sta target
   lda #>screen_base
   sta target+1
-  lda #char_x
-  ldx #numrows
+  lda #fill_char
+  ldx #numrows              // X is loop index
 fill_column_1:
-  ldy #0
+  ldy #0                    // write X to column 1
   sta (target),y
-  ldy #(numcols-1)
+  ldy #(numcols-1)          // write X to column 40
   sta (target),y
-  add(target, numcols)
-  dex
-  bne fill_column_1
+  add(target, numcols)      // add one row
+  dex                       // decrement loop index
+  bne fill_column_1         // loop until we reach 0
 
   rts
 
+/*
+ * Add value `val` to the 16 bit memory location at `loc`
+ */
 .macro add(loc, val) {
+  pha                       // save A register
+
   clc
-  pha
   lda loc
   adc #<val
   sta loc
   lda loc+1
   adc #>val
   sta loc+1
-  pla
+
+  pla                       // restore A register
 }
