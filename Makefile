@@ -1,4 +1,4 @@
 %.prg: %.asm
-	java -jar KickAss.jar $<
+	java -jar KickAss.jar -showmem -vicesymbols $<
 
 all: fill.prg
