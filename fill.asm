@@ -1,4 +1,6 @@
+#if BASIC_PREAMBLE
 :BasicUpstart2(main)
+#endif
 
 .const numrows       = 24       // number of rows on screen
 .const numcols       = 40       // number of columns on screen

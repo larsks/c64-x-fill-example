@@ -1,5 +1,5 @@
 ASM = java -jar KickAss.jar
-ASMFLAGS = -showmem -vicesymbols
+ASMFLAGS = -showmem -vicesymbols -define BASIC_PREAMBLE
 
 X64 = x64sc
 X64FLAGS = -debugcart
