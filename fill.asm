@@ -4,6 +4,7 @@
 .const numcols       = 40       // number of columns on screen
 .const fill_char     = 24       // fill character for border
 .const GETIN         = $ffe4    // kernel routine to read key
+.const SCINIT        = $ff81    // kernel routine to clear screen
 .const debug_exit    = $d7ff    // See https://vice-emu.pokefinder.org/wiki/Debugcart
 
 .const screen_base   = $0400
@@ -15,6 +16,8 @@ target: .word 0                 // define zero page variable for 16 bit addition
 
 * = $c000 "Main"
 main:
+  jsr SCINIT
+
   ldx #numcols                  // x is loop index
   lda #fill_char
 fill_row_1:
