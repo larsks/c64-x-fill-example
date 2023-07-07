@@ -4,7 +4,7 @@
 all: fill.prg
 
 run: all
-	x64sc fill.prg
+	x64sc -debugcart fill.prg
 
 clean:
 	rm -f fill.prg fill.vs

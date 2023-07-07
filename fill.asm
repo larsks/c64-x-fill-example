@@ -3,6 +3,8 @@
 .const numrows       = 24       // number of rows on screen
 .const numcols       = 40       // number of columns on screen
 .const fill_char     = 24       // fill character for border
+.const GETIN         = $ffe4    // kernel routine to read key
+.const debug_exit    = $d7ff    // See https://vice-emu.pokefinder.org/wiki/Debugcart
 
 .const screen_base   = $0400
 .const screen_row_01 = screen_base
@@ -36,6 +38,16 @@ fill_column_1:
   dex                           // decrement loop index
   bne fill_column_1             // loop until we reach 0
 
+  jsr wait_for_key
+
+  lda #0                        // this will cause the VICE emulator
+  sta debug_exit                // to exit
+
+  rts
+
+wait_for_key:
+  jsr GETIN
+  beq wait_for_key
   rts
 
 /*
