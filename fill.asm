@@ -16,10 +16,10 @@ main:
   ldx #numcols              // x is loop index
   lda #fill_char
 fill_row_1:
+  dex
   sta screen_row_01,X
   sta screen_row_24,X
-  dex                       // decrement loop index
-  bne fill_row_1            // loop until we reach 0
+  bne fill_row_1                // loop until we reach 0
 
   lda #<screen_base         // store screen base address in target
   sta target
