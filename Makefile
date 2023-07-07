@@ -1,10 +1,20 @@
-%.prg: %.asm
-	java -jar KickAss.jar -showmem -vicesymbols $<
+ASM = java -jar KickAss.jar
+ASMFLAGS = -showmem -vicesymbols
 
-all: fill.prg
+X64 = x64sc
+X64FLAGS = -debugcart
+
+SRCS = $(wildcard *.asm)
+PRGS = $(SRCS:.asm=.prg)
+VICESYMBOLS = $(SRCS:.asm=.vs)
+
+%.prg: %.asm
+	$(ASM) $(ASMFLAGS) $<
+
+all: $(PRGS)
 
 run: all
-	x64sc -debugcart fill.prg
+	$(X64) $(X64FLAGS) fill.prg
 
 clean:
-	rm -f fill.prg fill.vs
+	rm -f $(PRGS) $(VICESYMBOLS)
