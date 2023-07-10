@@ -16,37 +16,47 @@
 * = $00fb "ZP" virtual
 target: .word 0                 // define zero page variable for 16 bit addition
 
-* = $c000 "Main"
+* = $c000 "main"
 main:
   jsr clear_screen
+  jsr fill_rows
+  jsr fill_columns
+  jsr wait_for_key
+  jsr exit
 
+  rts
+
+exit:
+  lda #0                        // this will cause the VICE emulator
+  sta debug_exit                // to exit
+  rts
+
+fill_rows:
   ldx #numcols                  // x is loop index
   lda #fill_char
-fill_row_1:
+!:
   dex
   sta screen_row_01,X
   sta screen_row_24,X
-  bne fill_row_1                // loop until we reach 0
+  bne !-
 
+  rts
+
+fill_columns:
   lda #<screen_base             // store screen base address in target
   sta target
   lda #>screen_base
   sta target+1
   lda #fill_char
   ldx #numrows                  // X is loop index
-fill_column_1:
+!:
   ldy #0                        // write X to column 1
   sta (target),y
   ldy #(numcols-1)              // write X to column 40
   sta (target),y
   add(target, numcols)          // add one row
   dex                           // decrement loop index
-  bne fill_column_1             // loop until we reach 0
-
-  jsr wait_for_key
-
-  lda #0                        // this will cause the VICE emulator
-  sta debug_exit                // to exit
+  bne !-
 
   rts
 
