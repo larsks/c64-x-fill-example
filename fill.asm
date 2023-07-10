@@ -6,8 +6,10 @@
 .const numcols       = 40       // number of columns on screen
 .const fill_char     = 24       // fill character for border
 .const space_char    = 32       // fill character for border
-.const GETIN         = $ffe4    // kernel routine to read key
 .const debug_exit    = $d7ff    // See https://vice-emu.pokefinder.org/wiki/Debugcart
+
+.const DDRB          = $dc03    // port b data direction register
+.const PORTB         = $dc01    // port b (keyboard input)
 
 .const screen_base   = $0400
 .const screen_row_01 = screen_base
@@ -61,8 +63,14 @@ fill_columns:
   rts
 
 wait_for_key:
-  jsr GETIN
-  beq wait_for_key
+  pha
+  lda #0
+  sta DDRB
+!:
+  lda PORTB
+  cmp #$ff
+  beq !-
+  pla
   rts
 
 clear_screen:
