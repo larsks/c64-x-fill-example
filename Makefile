@@ -1,5 +1,6 @@
 ASM = java -jar KickAss.jar
-ASMFLAGS = -showmem -vicesymbols -define BASIC_PREAMBLE
+ASMDEFS = -define BASIC_PREAMBLE
+ASMFLAGS = -showmem -vicesymbols
 
 X64 = x64sc
 X64FLAGS = -debugcart
@@ -9,7 +10,7 @@ PRGS = $(SRCS:.asm=.prg)
 VICESYMBOLS = $(SRCS:.asm=.vs)
 
 %.prg: %.asm
-	$(ASM) $(ASMFLAGS) $<
+	$(ASM) $(ASMFLAGS) $(ASMDEFS) $<
 
 all: $(PRGS)
 
