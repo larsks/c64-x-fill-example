@@ -29,7 +29,7 @@ exit:
 
 fill_every_5:
   lda #fill_char
-  ldx #$ff
+  ldx #$fa
 !:
   dex
   dex
@@ -37,9 +37,9 @@ fill_every_5:
   dex
   dex
   sta screen_base,x
-  sta screen_base+(1*$ff),x
-  sta screen_base+(2*$ff),x
-  sta screen_base+(3*$ff),x
+  sta screen_base+(1*$fa),x
+  sta screen_base+(2*$fa),x
+  sta screen_base+(3*$fa),x
   bne !-
 
   rts
@@ -56,13 +56,13 @@ wait_for_key:
   rts
 
 clear_screen:
-  ldx #255                      // x is loop index
+  ldx #$fa
   lda #space_char
 !:
   sta screen_base,X
-  sta screen_base+256,X
-  sta screen_base+256*2,X
-  sta screen_base+256*3,X
+  sta screen_base+(1*$fa),X
+  sta screen_base+(2*$fa),X
+  sta screen_base+(3*$fa),X
   dex
   bne !-
 
